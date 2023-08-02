@@ -11,12 +11,13 @@ const Detail = ({ data }) => {
   const [activeBtn, setActiveBtn] = useState(0);
   const agentPortrait = useRef(null);
   const agentBg = useRef(null);
+  const textBox = useRef(null);
   const location = useLocation().pathname.slice(8);
 
   useEffect(() => {
     const detail = data?.filter((agent) => agent.displayName === location);
     setAgent(detail);
-  }, []);
+  }, [data]);
 
   const live = (e) => {
     agentPortrait.current.style.transform = `translate(${e.pageX / 120}px,${
@@ -83,8 +84,25 @@ const Detail = ({ data }) => {
                 src={agent[0].fullPortrait}
                 alt="agent portrait"
               />
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                strokeWidth={1.5}
+                stroke="currentColor"
+                className="arrow animate"
+                onClick={() =>
+                  textBox.current.scrollIntoView({ behavior: "smooth" })
+                }
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M19.5 8.25l-7.5 7.5-7.5-7.5"
+                />
+              </svg>
             </Imgs>
-            <Text variants={agentInfoReveal}>
+            <Text variants={agentInfoReveal} ref={textBox}>
               <h5>{agent[0].role.displayName}</h5>
               <h1>{agent[0].displayName}</h1>
               <Grid>
@@ -205,10 +223,23 @@ const Agent = styled.div`
     text-align: justify;
     line-height: 120%;
   }
+  @media screen and (max-width: 1200px) {
+    padding: 5rem 2rem;
+    height: auto;
+  }
+  @media screen and (max-width: 940px) {
+    padding: 0rem 2rem;
+    flex-direction: column;
+    overflow-y: scroll;
+  }
+  @media screen and (max-width: 710px) {
+    padding: 0;
+  }
 `;
 
 const Text = styled(motion.div)`
   height: calc(90vh - 80px);
+  max-height: 640px;
   color: white;
   flex: 1;
   background-color: rgba(255, 255, 255, 0.4);
@@ -227,6 +258,25 @@ const Text = styled(motion.div)`
     font-family: "Vina Sans", cursive;
     font-size: 8rem;
     margin-top: -10px;
+  }
+  @media screen and (max-width: 1200px) {
+    height: auto;
+  }
+  @media screen and (max-width: 940px) {
+    margin: 0rem 5rem;
+    margin-bottom: 4rem;
+  }
+  @media screen and (max-width: 710px) {
+    margin: 0;
+    border-radius: 0%;
+    width: 100%;
+
+    h1 {
+      font-size: 5rem;
+    }
+  }
+  @media screen and (max-width: 400px) {
+    padding: 1rem 1rem;
   }
 `;
 const Imgs = styled.div`
@@ -250,15 +300,37 @@ const Imgs = styled.div`
     bottom: 0%;
     left: 0%;
   }
+  .arrow {
+    color: white;
+    position: absolute;
+    bottom: -5%;
+    left: 50%;
+    transform: translateX(-50%);
+    height: 90px;
+    cursor: pointer;
+    z-index: 50;
+    &:hover {
+      animation-play-state: paused;
+    }
+  }
+  @media screen and (max-width: 940px) {
+    width: 100%;
+    flex-basis: calc(100vh - 130px);
+  }
+  @media screen and (min-width: 941px) {
+    .arrow {
+      display: none;
+    }
+  }
 `;
 
 const Grid = styled.div`
   display: flex;
   align-items: center;
-  justify-content: center;
   gap: 10px;
   width: 75%;
   height: 12%;
+  max-height: 65px;
   margin-top: 30px;
   position: relative;
 
@@ -297,11 +369,28 @@ const Grid = styled.div`
       right: -2%;
     }
   }
+  @media screen and (max-width: 1200px) {
+    &::before,
+    &::after {
+      display: none;
+    }
+    height: auto;
+  }
+  @media screen and (min-width: 1700px) {
+    &::before,
+    &::after {
+      display: none;
+    }
+  }
+  @media screen and (max-width: 500px) {
+    width: 100%;
+  }
 `;
 
 const Box = styled.div`
   flex: 1;
   cursor: pointer;
+  max-width: 90px;
   .up {
     display: flex;
     align-items: center;

@@ -17,6 +17,22 @@ const GlobalStyle = createGlobalStyle`
     .active {
         opacity: 0.6;
     }
+    @keyframes arrow {
+        0% {
+            transform: translate(-50%, -10%);
+
+        }
+        50% {
+            transform: translate(-50%, 0%);
+        }
+        100% {
+            transform: translate(-50%, -10%);
+
+        }
+    }
+    .animate {
+        animation: arrow 2s ease-in-out 0s infinite  ;
+    }
 `;
 
 export default GlobalStyle;

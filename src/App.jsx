@@ -4,6 +4,7 @@ import axios from "axios";
 import GlobalStyle from "./GlobalStyle";
 // Components
 import Nav from "./components/Nav";
+import ScrollTop from "./components/ScrollTop";
 // React-router
 import { Routes, Route } from "react-router-dom";
 // Pages
@@ -17,7 +18,10 @@ function App() {
   const apiAgentsRequest = async () => {
     try {
       const { data } = await axios.get("https://valorant-api.com/v1/agents");
-      setData(data.data);
+      const filteredData = data?.data.filter(
+        (agent) => agent.isPlayableCharacter === true
+      );
+      setData(filteredData);
     } catch (err) {
       console.log(err);
     }
@@ -28,6 +32,7 @@ function App() {
   return (
     <>
       <GlobalStyle />
+      <ScrollTop />
       <Nav />
       <Routes>
         <Route path="/" element={<Home key="Home" />} />

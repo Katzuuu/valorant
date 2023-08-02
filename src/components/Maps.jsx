@@ -36,6 +36,9 @@ const Container = styled.div`
   padding: 5rem 8rem;
   padding-top: 80px;
   background-color: #0d1a27;
+  @media screen and (max-width: 1199px) {
+    padding: 5rem 0rem;
+  }
 `;
 
 export default Maps;
